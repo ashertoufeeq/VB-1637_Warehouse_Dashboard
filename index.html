@@ -53,8 +53,13 @@
                 <th>Order ID</th>
                 <th>Item</th>
                 <th>Priority</th>
-                <th>Quantity</th>
                 <th>City</th>
+                <th>Dispatched</th>
+                <th>Shipped</th>
+                <th>Order Date and Time</th>
+                <th>Dispatch Date and Time</th>
+                <th>Shipping Date and Time</th>
+                <th>Time Taken</th>
             </tr>
             <tbody id="tableContent">
             </tbody>
@@ -90,7 +95,7 @@
         var graph_arr = [['Order ID', 'Time Taken', { role: 'style' }]];
         var bar_color = [];
         
-        function getMarker(j){
+        function getMarker(dispatched,shipped){
             var conf = { 
                       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
                       iconSize: [25, 41],
@@ -113,13 +118,13 @@
                       ...conf,
                 });     
                  
-            if(j == 'HP'){
+            if(!dispatched && !shipped){
                       return red
                 }
-            else if(j == 'MP'){
+            else if(dispatched && shipped){
                 return green
                  }
-            else if(j == 'LP'){
+            else if(dispatched && !shipped){
                 return yellow
                         }    
             return red;        
@@ -134,10 +139,15 @@
 
                     trHTML += '<tr><td>' + data.feed.entry[i].gsx$orderid.$t + 
                         	  '</td><td>' + data.feed.entry[i].gsx$item.$t + 
-                        	  '</td><td>' + data.feed.entry[i].gsx$priority.$t + 
-                        	  '</td><td>' + data.feed.entry[i].gsx$quantity.$t + 
-                        	  '</td><td>'  + data.feed.entry[i].gsx$city.$t + 
-                        	  '</td></tr>';
+                        	  '</td><td>' + data.feed.entry[i].gsx$priority.$t +  
+                        	  '</td><td>' + data.feed.entry[i].gsx$city.$t + 
+                            '</td><td>' + data.feed.entry[i].gsx$dispatched.$t +
+                            '</td><td>' + data.feed.entry[i].gsx$shipped.$t +
+                            '</td><td>' + data.feed.entry[i].gsx$orderdateandtime.$t +  
+                        	  '</td><td>' + data.feed.entry[i].gsx$dispatchdateandtime.$t + 
+                            '</td><td>' + data.feed.entry[i].gsx$shippingdateandtime.$t +
+                            '</td><td>' + data.feed.entry[i].gsx$timetaken.$t +
+                            '</td></tr>';
 
             }
 
@@ -161,7 +171,7 @@
                 
                 for (var j = 0; j < jsonDataObject.length; j++) {
                        
-                    var marker = L.marker(L.latLng(parseFloat(jsonDataObject[j].Latitude), parseFloat(jsonDataObject[j].Longitude)),{icon:getMarker(jsonDataObject[j].Priority)});
+                    var marker = L.marker(L.latLng(parseFloat(jsonDataObject[j].Latitude), parseFloat(jsonDataObject[j].Longitude)),{icon:getMarker(data.feed.entry[i].gsx$dispatched.$t==='Yes',data.feed.entry[i].gsx$shipped.$t==='Yes')});
                     marker.bindPopup(jsonDataObject[j].City, {
                             autoClose: false,
     
