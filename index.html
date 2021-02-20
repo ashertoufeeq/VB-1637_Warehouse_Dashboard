@@ -96,6 +96,7 @@
         var bar_color = [];
         
         function getMarker(dispatched,shipped){
+            console.log(dispatched,shipped,'Ggg')
             var conf = { 
                       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
                       iconSize: [25, 41],
@@ -126,8 +127,7 @@
                  }
             else if(dispatched && !shipped){
                 return yellow
-                        }    
-            return red;        
+                }         
         }
 
         $.getJSON('https://spreadsheets.google.com/feeds/list/1rianYVvWCIJeoa17Jlrg7GZTUwuI_SG3KaKaaHtgGvY/6/public/full?alt=json', function(data) {
@@ -136,7 +136,7 @@
 
             for (var i = 0; i < data.feed.entry.length; ++i) {
                 	var myData_map, myData_order;
-
+                  console.log(data.feed.entry[i],'Print')
                     trHTML += '<tr><td>' + data.feed.entry[i].gsx$orderid.$t + 
                         	  '</td><td>' + data.feed.entry[i].gsx$item.$t + 
                         	  '</td><td>' + data.feed.entry[i].gsx$priority.$t +  
@@ -148,7 +148,6 @@
                             '</td><td>' + data.feed.entry[i].gsx$shippingdateandtime.$t +
                             '</td><td>' + data.feed.entry[i].gsx$timetaken.$t +
                             '</td></tr>';
-
             }
 
                 console.log(trHTML);
@@ -163,15 +162,16 @@
                     "Latitude": parseFloat(data.feed.entry[i].gsx$latitude.$t),
                     "Longitude": parseFloat(data.feed.entry[i].gsx$longitude.$t),
                     "TimeTaken": parseFloat(data.feed.entry[i].gsx$timetaken.$t),
-                    "Priority": data.feed.entry[i].gsx$priority.$t
+                    "Priority": data.feed.entry[i].gsx$priority.$t,
+                    "shipped":data.feed.entry[i].gsx$shipped.$t,
+                    "dispatched": data.feed.entry[i].gsx$dispatched.$t
                 };              
                 jsonDataObject.push(json_data);
                 
 
                 
                 for (var j = 0; j < jsonDataObject.length; j++) {
-                       
-                    var marker = L.marker(L.latLng(parseFloat(jsonDataObject[j].Latitude), parseFloat(jsonDataObject[j].Longitude)),{icon:getMarker(data.feed.entry[i].gsx$dispatched.$t==='Yes',data.feed.entry[i].gsx$shipped.$t==='Yes')});
+                    var marker = L.marker(L.latLng(parseFloat(jsonDataObject[j].Latitude), parseFloat(jsonDataObject[j].Longitude)),{icon:getMarker(jsonDataObject[j].dispatched==='Yes',jsonDataObject[j].shipped==='Yes')});
                     marker.bindPopup(jsonDataObject[j].City, {
                             autoClose: false,
     
