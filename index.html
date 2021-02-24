@@ -4,8 +4,8 @@
     <title>Vargi-Bots</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script
-      defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaolkuSPpv0E8UzZHjNdULuZUf-bG8CCs&callback=refreshDashboard&libraries=&v=weekly"
+
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIwzALxUPNbatRBj3Xi1Uhp0fFzwWNBkE&callback=refreshDashboard&libraries=&v=weekly"
       async
     ></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
@@ -80,13 +80,15 @@
 
 <script>
   /////////////Ajax Requests////////////
+  
+  // setTimeout(function () {
+  //      window.location.reload();
+  //   }, 5000);
+
   $(document).ready(function() {
       // Fetch the initial table
       refreshDashboard();
-  
-      // Fetch every 10s second
-      setInterval(refreshDashboard, 5000);
-  });
+      });
   google.charts.load("current", {packages:['corechart']});
   google.charts.setOnLoadCallback(refreshDashboard);
 
@@ -207,7 +209,8 @@
               chart.draw(data, options);
       });	 
   }	
-  
+  setInterval(refreshDashboard, 30000);
+
 </script>
   </body>
 </html>
