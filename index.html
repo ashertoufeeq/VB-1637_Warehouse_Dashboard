@@ -84,8 +84,7 @@
       // Fetch the initial table
       refreshDashboard();
   
-      // Fetch every 10s second
-      setInterval(refreshDashboard, 5000);
+      
   });
   google.charts.load("current", {packages:['corechart']});
   google.charts.setOnLoadCallback(refreshDashboard);
@@ -207,7 +206,8 @@
               chart.draw(data, options);
       });	 
   }	
-  
+  // Fetch every 10s second
+  setInterval(refreshDashboard, 5000);
 </script>
   </body>
 </html>
